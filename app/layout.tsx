@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Architects_Daughter } from "next/font/google";
 import Navigation from "@/components/navigation";
+import { BackgroundPaths } from "@/components/ui/background-paths";
 
 const architectsDaughter = Architects_Daughter({
   subsets: ["latin"],
@@ -29,12 +30,19 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          enableSystem={false}
           disableTransitionOnChange
         >
-          <Navigation />
-          {children}
+          {/* Fixed background component */}
+          <div className="fixed inset-0 z-0">
+            <BackgroundPaths />
+          </div>
+          {/* Content wrapper */}
+          <div className="relative z-10">
+            <Navigation />
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>

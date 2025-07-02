@@ -18,7 +18,7 @@ export function ThemeSelector({ onThemeSelect }: { onThemeSelect?: () => void })
       <div className="grid grid-cols-1 gap-3">
         {themes.map((theme) => {
           const isSelected = currentTheme.name === theme.name;
-          const colors = mode === "dark" ? theme.dark : theme.light;
+          // const colors = mode === "dark" ? theme.dark : theme.light;
           return (
             <button
               key={theme.name}

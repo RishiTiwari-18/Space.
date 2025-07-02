@@ -17,7 +17,7 @@ import { ThemeSelector } from "./theme-selector";
 const navLinks = [
   { href: "/", text: "Focus" },
   { href: "/tasks", text: "Tasks" },
-  { href: "/aihelper", text: "Ai Helper" },
+  // { href: "/aihelper", text: "Ai Helper" },
   { href: "/wellness", text: "Wellness" },
   { href: "/study", text: "Study" },
   { href: "/journal", text: "Journal" },

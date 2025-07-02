@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader } from './ui/card';
 import { Button } from './ui/button'; // Assuming Button component path
 import { Slider } from './ui/slider'; // Assuming Slider component path
-import { Play, Volume2, VolumeX, CloudRain, Trees, Waves, Wind, CloudLightning, Flame, Bird, MountainSnow, Square } from 'lucide-react'; 
+import { Play, Volume2, VolumeX, CloudRain, Trees, Waves, Wind, CloudLightning, Flame, Bird, Square } from 'lucide-react'; 
 
 const ambientSoundsData = [
   { name: 'Rain', src: '/audio/rain.mp3', icon: CloudRain },
@@ -34,7 +34,7 @@ function AmbientSoundItem({ sound }: AmbientSoundItemProps) {
         audioRef.current.loop = true; // Loop the ambient sound
         audioRef.current.volume = volume;
         // Optional: Handle errors
-        audioRef.current.onerror = (e) => {
+        audioRef.current.onerror = () => {
           // const err = audioRef.current?.error;
           // if (err) {
           //   console.error(

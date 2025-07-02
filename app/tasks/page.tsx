@@ -151,7 +151,7 @@ export default function TaskPage() {
         {/* Render the list of tasks */}
         {sortedTasks.map((task) => (
           <Card key={task.id} className={`${task.completed ? "opacity-60" : ""}`}>
-            <CardContent className="p-4">
+            <CardContent className="">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <Button variant="ghost" size="sm" onClick={() => toggleTask(task.id)}>

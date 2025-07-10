@@ -19,6 +19,7 @@ export default function Pomodoro() {
   const [secondsLeft, setSecondsLeft] = useState(duration * 60);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Sync timer when duration changes (if not running)
   useEffect(() => {
@@ -32,6 +33,11 @@ export default function Pomodoro() {
         setSecondsLeft((prev) => {
           if (prev > 0) return prev - 1;
           setIsRunning(false);
+          // Play sound when timer completes
+          if (audioRef.current) {
+            audioRef.current.currentTime = 0;
+            audioRef.current.play();
+          }
           return 0;
         });
       }, 1000);
@@ -124,6 +130,7 @@ export default function Pomodoro() {
           </Button>
           <Button onClick={handleReset}>Reset</Button>
         </div>
+        <audio ref={audioRef} src="/audio/complete.mp3" preload="auto" />
       </CardContent>
     </Card>
   );

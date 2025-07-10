@@ -13,6 +13,7 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { ThemeSelector } from "./theme-selector";
+import { useTheme } from "@/lib/use-theme";
 
 const navLinks = [
   { href: "/", text: "Focus" },
@@ -27,6 +28,7 @@ const navLinks = [
 
 
 export default function Navigation() {
+  useTheme();
 
   return (
     <div className="flex justify-between items-center h-16 px-10">

@@ -4,9 +4,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Architects_Daughter } from "next/font/google";
 import Navigation from "@/components/navigation";
 import { BackgroundPaths } from "@/components/ui/background-paths";
-import { Card, CardContent } from "@/components/ui/card";
-import { Bird, CloudLightning, CloudRain, Flame, Trees, Waves, Wind } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const architectsDaughter = Architects_Daughter({
   subsets: ["latin"],

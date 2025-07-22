@@ -80,7 +80,7 @@ export default function TaskPage() {
 
 
   return (
-    <div className="p-10 flex w-full justify-center">
+    <div className="p-4 md:p-10 flex w-full justify-center">
       <div className="max-w-4xl w-full flex gap-8  flex-col h-full">
 
         {/* heading */}
@@ -126,7 +126,7 @@ export default function TaskPage() {
           </CardContent>
         </Card>
 
-        <div className="grid  grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           <Card>
             <CardContent className="flex flex-col items-center">
               <h2 className="text-3xl text-blue-400 font-bold">{totalTasks}</h2>

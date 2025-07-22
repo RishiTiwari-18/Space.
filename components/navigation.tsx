@@ -31,11 +31,11 @@ export default function Navigation() {
   useTheme();
 
   return (
-    <div className="flex justify-between items-center h-16 px-10">
+    <div className="flex justify-between items-center h-16 px-4 md:px-10">
       <div>
         <h1 className="text-xl flex items-center gap-2">Space. <Telescope size={20} /></h1>
       </div>
-      <div className="flex gap-10">
+      <div className=" max-md:hidden flex gap-10">
         {navLinks.map((link) => (
           <Link
             className="text-sm hover:text-accent-foreground duration-200"
@@ -53,7 +53,7 @@ export default function Navigation() {
               <Palette className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent>
+          <SheetContent className="max-md:w-full">
             <SheetHeader>
               <SheetTitle>Customize Appearance</SheetTitle>
               <SheetDescription>

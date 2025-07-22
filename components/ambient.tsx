@@ -109,7 +109,7 @@ function AmbientSoundItem({ sound }: AmbientSoundItemProps) {
     <div className="flex items-center bg-black/5 justify-between p-3 border rounded-md">
       <div className="flex items-center gap-3">
         <Icon size={20} />
-        <span>{sound.name}</span>
+        <span className='max-md:hidden'>{sound.name}</span>
       </div>
       <div>
         {!isPlaying ? (

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import {
@@ -13,63 +12,22 @@ import {
   SheetClose,
 } from "./ui/sheet";
 import { Minus, Plus } from "lucide-react";
+import { usePomodoro } from "@/contexts/PomodoroContext";
 
 export default function Pomodoro() {
-  const [duration, setDuration] = useState(25); // in minutes
-  const [secondsLeft, setSecondsLeft] = useState(duration * 60);
-  const [isRunning, setIsRunning] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Sync timer when duration changes (if not running)
-  useEffect(() => {
-    if (!isRunning) setSecondsLeft(duration * 60);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [duration]);
-
-  useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(() => {
-        setSecondsLeft((prev) => {
-          if (prev > 0) return prev - 1;
-          setIsRunning(false);
-          // Play sound when timer completes
-          if (audioRef.current) {
-            audioRef.current.currentTime = 0;
-            audioRef.current.play();
-          }
-          return 0;
-        });
-      }, 1000);
-    } else if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [isRunning]);
-
-  const minutes = Math.floor(secondsLeft / 60)
-    .toString()
-    .padStart(2, "0");
-  const seconds = (secondsLeft % 60).toString().padStart(2, "0");
-
-  const handleStart = () => {
-    if (secondsLeft > 0) setIsRunning(true);
-  };
-  const handlePause = () => setIsRunning(false);
-  const handleReset = () => {
-    setIsRunning(false);
-    setSecondsLeft(duration * 60);
-  };
-
-  const handleDurationChange = (change: number) => {
-    setDuration((prev) => {
-      const next = Math.max(1, Math.min(60, prev + change));
-      return next;
-    });
-  };
+  const {
+    duration,
+    secondsLeft,
+    isRunning,
+    minutes,
+    seconds,
+    handleStart,
+    handlePause,
+    handleReset,
+    handleDurationChange,
+  } = usePomodoro();
+  
 
   return (
     <Card className="w-full flex flex-col gap-4">
@@ -130,7 +88,6 @@ export default function Pomodoro() {
           </Button>
           <Button onClick={handleReset}>Reset</Button>
         </div>
-        <audio ref={audioRef} src="/audio/complete.mp3" preload="auto" />
       </CardContent>
     </Card>
   );

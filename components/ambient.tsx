@@ -29,11 +29,11 @@ export default function Ambient() {
         aria-labelledby="ambient-sounds-title"
       >
           {ambientSoundsData.map((sound) => (
-            <li key={sound.name} className="list-none" aria-label={`${sound.name} ambient sound`}>
+            <div key={sound.name} className="list-none" aria-label={`${sound.name} ambient sound`}>
               <AmbientSoundItem sound={sound} />
               <meta itemProp="audio" content={sound.src} />
               <meta itemProp="description" content={sound.description} />
-            </li>
+            </div>
           ))}
       </CardContent>
     </Card>

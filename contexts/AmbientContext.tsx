@@ -1,7 +1,7 @@
 
 "use client"
 
-import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Play, Volume2, VolumeX, Square } from "lucide-react";
@@ -32,11 +32,9 @@ const AmbientContext = createContext<AmbientContextType>({ AmbientSoundItem: () 
 export const AmbientProvider = ({ children }: { children: React.ReactNode }) => {
   const [soundStates, setSoundStates] = useState<Record<string, AmbientSoundState>>({});
 
-  // Fix: Use React.MutableRefObject<HTMLAudioElement | null> for audioRef, and ensure type safety
   const ensureSoundState = useCallback((sound: AmbientSound) => {
     setSoundStates((prev) => {
       if (prev[sound.name]) return prev;
-      // Create a ref for this sound if it doesn't exist
       const audioRef = React.createRef<HTMLAudioElement>() as React.MutableRefObject<HTMLAudioElement | null>;
       return {
         ...prev,
@@ -67,7 +65,6 @@ export const AmbientProvider = ({ children }: { children: React.ReactNode }) => 
         audio.loop = true;
         audio.volume = volume;
         audioRef.current = audio;
-        // Optional: handle errors
         audio.onerror = () => {
           setSoundStates((prev) => ({
             ...prev,
@@ -146,19 +143,48 @@ export const AmbientProvider = ({ children }: { children: React.ReactNode }) => 
     const Icon = sound.icon;
 
     return (
-      <div className="flex items-center bg-black/5 justify-between p-3 border rounded-md">
+      <div
+        className="flex items-center bg-black/5 justify-between p-3 border rounded-md"
+        itemScope
+        itemType="https://schema.org/AudioObject"
+        aria-label={`${sound.name} ambient sound controls`}
+      >
+        <meta itemProp="name" content={sound.name} />
+        <meta itemProp="encodingFormat" content="audio/mpeg" />
+        <meta itemProp="url" content={sound.src} />
+        <meta itemProp="inLanguage" content="en" />
         <div className="flex items-center gap-3">
-          <Icon size={20} />
-          <span className='max-md:hidden'>{sound.name}</span>
+          <span aria-hidden="true">
+            <Icon size={20} />
+          </span>
+          <span className="max-md:hidden" itemProp="name">
+            {sound.name}
+          </span>
         </div>
         <div>
           {!isPlaying ? (
-            <Button variant="outline" size="icon" onClick={handlePlayToggle} aria-label={`Play ${sound.name}`}>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handlePlayToggle}
+              aria-label={`Play ${sound.name} ambient sound`}
+              title={`Play ${sound.name} ambient sound`}
+              itemProp="potentialAction"
+              itemScope
+              itemType="https://schema.org/PlayAction"
+            >
               <Play size={20} />
+              <meta itemProp="target" content={sound.src} />
             </Button>
           ) : (
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" onClick={handleMuteToggle} aria-label={volume === 0 ? "Unmute" : "Mute"}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleMuteToggle}
+                aria-label={volume === 0 ? `Unmute ${sound.name}` : `Mute ${sound.name}`}
+                title={volume === 0 ? `Unmute ${sound.name}` : `Mute ${sound.name}`}
+              >
                 {volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
               </Button>
               <Slider
@@ -167,9 +193,21 @@ export const AmbientProvider = ({ children }: { children: React.ReactNode }) => 
                 step={0.01}
                 onValueChange={handleVolumeChange}
                 className="w-[100px]"
+                aria-label={`${sound.name} volume`}
+                title={`${sound.name} volume`}
               />
-              <Button variant="outline" size="icon" onClick={handleStop} aria-label={`Stop ${sound.name}`}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleStop}
+                aria-label={`Stop ${sound.name} ambient sound`}
+                title={`Stop ${sound.name} ambient sound`}
+                itemProp="potentialAction"
+                itemScope
+                itemType="https://schema.org/StopAction"
+              >
                 <Square size={20} />
+                <meta itemProp="target" content={sound.src} />
               </Button>
             </div>
           )}

@@ -23,15 +23,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  // const ambientSoundsData = [
-  //   { name: 'Rain', src: '/audio/rain.mp3', icon: CloudRain },
-  //   { name: 'Fire', src: '/audio/fire.mp3', icon: Flame },
-  //   { name: 'Forest', src: '/audio/forest.mp3', icon: Trees },
-  //   { name: 'Waves', src: '/audio/waves.mp3', icon: Waves },
-  //   { name: 'Thunder', src: '/audio/thunder.mp3', icon: CloudLightning }, 
-  //   { name: 'River', src: '/audio/river.mp3', icon: Wind },
-  //   { name: 'Birds', src: '/audio/birds.mp3', icon: Bird }, 
-  // ];
 
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
@@ -45,7 +36,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Fixed background component */}
           <div className="fixed inset-0 z-0">
             <BackgroundPaths />
           </div>
@@ -54,15 +44,6 @@ export default function RootLayout({
             <Navigation />
             {children}
           </div>
-          {/* <div className="fixed bottom-4 right-4 z-50">
-            <Card className="">  
-              <CardContent className=" flex gap-3">
-                {ambientSoundsData.map((item, index) => (
-                <Button key={index} variant="outline" size="icon" > <item.icon size={20}/></Button>
-                ))}
-              </CardContent>
-            </Card>
-          </div> */}
         </ThemeProvider>
       </body>
     </html>

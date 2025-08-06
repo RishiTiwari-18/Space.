@@ -19,7 +19,6 @@ import { useState } from "react";
 const navLinks = [
   { href: "/", text: "Focus" },
   { href: "/tasks", text: "Tasks" },
-  // { href: "/aihelper", text: "Ai Helper" },
   { href: "/wellness", text: "Wellness" },
   { href: "/study", text: "Study" },
   { href: "/journal", text: "Journal" },
@@ -32,7 +31,7 @@ export default function Navigation() {
   const router = useRouter();
 
   // Handler for mobile nav link click: close sheet and navigate
-  const handleMobileNavClick = (href: string) => (e: React.MouseEvent) => {
+  const handleMobileNavClick = (href: string) => () => {
     setOpen(false);
     router.push(href);
   };

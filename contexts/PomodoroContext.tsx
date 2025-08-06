@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { createContext, useContext, useState, useRef, ReactNode, useEffect } from "react";
@@ -85,6 +86,7 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
     handleReset,
     handleDurationChange,
     intervalRef,
+    audioRef, 
   };
 
   return (

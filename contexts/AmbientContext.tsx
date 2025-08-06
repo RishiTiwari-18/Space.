@@ -1,12 +1,10 @@
 
-
 "use client"
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Play, Volume2, VolumeX, Square } from "lucide-react";
-
 
 type AmbientSound = {
   name: string;
@@ -18,7 +16,7 @@ type AmbientSoundState = {
   isPlaying: boolean;
   volume: number;
   prevVolume: number;
-  audioRef: React.RefObject<HTMLAudioElement>;
+  audioRef: React.MutableRefObject<HTMLAudioElement | null>;
 };
 
 type AmbientSoundItemProps = {
@@ -34,16 +32,19 @@ const AmbientContext = createContext<AmbientContextType>({ AmbientSoundItem: () 
 export const AmbientProvider = ({ children }: { children: React.ReactNode }) => {
   const [soundStates, setSoundStates] = useState<Record<string, AmbientSoundState>>({});
 
+  // Fix: Use React.MutableRefObject<HTMLAudioElement | null> for audioRef, and ensure type safety
   const ensureSoundState = useCallback((sound: AmbientSound) => {
     setSoundStates((prev) => {
       if (prev[sound.name]) return prev;
+      // Create a ref for this sound if it doesn't exist
+      const audioRef = React.createRef<HTMLAudioElement>() as React.MutableRefObject<HTMLAudioElement | null>;
       return {
         ...prev,
         [sound.name]: {
           isPlaying: false,
           volume: 0.5,
           prevVolume: 0.5,
-          audioRef: React.createRef<HTMLAudioElement>(),
+          audioRef,
         },
       };
     });
@@ -113,6 +114,7 @@ export const AmbientProvider = ({ children }: { children: React.ReactNode }) => 
     const handleMuteToggle = () => {
       setSoundStates((prev) => {
         const curr = prev[sound.name];
+        if (!curr) return prev;
         if (curr.volume > 0) {
           return {
             ...prev,

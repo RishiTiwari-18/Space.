@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Circle, CheckCircle, Trash2, Flag } from "lucide-react"; // Import necessary icons
-import { useState, useMemo } from "react"; // Import useState and useMemo
-import { Badge } from "@/components/ui/badge"; // Import Badge component
+import { Plus, Circle, CheckCircle, Trash2, Flag } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Badge } from "@/components/ui/badge";
 
 interface Task {
   id: number;
@@ -18,23 +18,23 @@ interface Task {
 export default function TaskPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskText, setNewTaskText] = useState('');
-  const [newTaskPriority, setNewTaskPriority] = useState<'low' | 'medium' | 'high'>('low'); // Default priority
+  const [newTaskPriority, setNewTaskPriority] = useState<'low' | 'medium' | 'high'>('low');
 
   const handleAddTask = () => {
     if (newTaskText.trim() === '') {
-      return; // Don't add empty tasks
+      return;
     }
 
     const newTask: Task = {
-      id: Date.now(), // Simple unique ID
+      id: Date.now(),
       text: newTaskText,
       priority: newTaskPriority,
       completed: false,
     };
 
     setTasks([...tasks, newTask]);
-    setNewTaskText(''); // Clear input
-    setNewTaskPriority('low'); // Reset priority select
+    setNewTaskText('');
+    setNewTaskPriority('low');
   };
 
   const toggleTask = (id: number) => {
@@ -47,7 +47,6 @@ export default function TaskPage() {
     setTasks(tasks.filter(task => task.id !== id));
   };
 
-  // Helper to get priority color class
   const getPriorityColor = (priority: 'low' | 'medium' | 'high') => {
     switch (priority) {
       case 'high':
@@ -60,30 +59,24 @@ export default function TaskPage() {
     }
   };
 
-  // Sort tasks by priority (high > medium > low) and then by completion status (incomplete first)
   const sortedTasks = useMemo(() => {
     const priorityOrder = { high: 3, medium: 2, low: 1 };
     return [...tasks].sort((a, b) => {
-      // Sort by completion status (incomplete first)
       if (a.completed !== b.completed) {
         return a.completed ? 1 : -1;
       }
-      // Then sort by priority
       return priorityOrder[b.priority] - priorityOrder[a.priority];
     });
   }, [tasks]);
-
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter(task => task.completed).length;
   const remainingTasks = totalTasks - completedTasks;
 
-
   return (
     <div className="p-4 md:p-10 flex w-full justify-center">
-      <div className="max-w-4xl w-full flex gap-8  flex-col h-full">
+      <div className="max-w-4xl w-full flex gap-8 flex-col h-full">
 
-        {/* heading */}
         <div className="flex flex-col items-center gap-3">
           <h1 className="text-2xl font-bold">Task Manager</h1>
           <p>Organize your study tasks by priority</p>
@@ -96,7 +89,7 @@ export default function TaskPage() {
           </CardHeader>
 
           <CardContent>
-            <div className="flex gap-2">
+            <div className="flex max-md:flex-col gap-2">
               <Input
                 placeholder="Enter a new task..."
                 value={newTaskText}
@@ -108,8 +101,9 @@ export default function TaskPage() {
                 }}
               />
               {/* Fix: Cast value to the correct type for setNewTaskPriority */}
+              <div className="flex gap-2 items-center">
               <Select value={newTaskPriority} onValueChange={(value) => setNewTaskPriority(value as 'low' | 'medium' | 'high')}>
-                <SelectTrigger className="w-34">
+                <SelectTrigger className="w-1/2 md:w-34">
                   <SelectValue placeholder="Priority" />
                 </SelectTrigger>
                 <SelectContent>
@@ -121,7 +115,8 @@ export default function TaskPage() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <Button onClick={handleAddTask}><Plus /></Button>
+              <Button className="max-md:w-1/2" onClick={handleAddTask}><Plus /></Button>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -135,58 +130,57 @@ export default function TaskPage() {
           </Card>
           <Card>
             <CardContent className="flex  flex-col items-center">
-            <h2 className="text-3xl text-green-400 font-bold">{completedTasks}</h2>
-            <p className="dark:text-gray-300">Completed</p>
+              <h2 className="text-3xl text-green-400 font-bold">{completedTasks}</h2>
+              <p className="dark:text-gray-300">Completed</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="flex flex-col items-center">
-            <h2 className="text-3xl text-red-400 font-bold">{remainingTasks}</h2>
-            <p className="dark:text-gray-300">Remaining</p>
+              <h2 className="text-3xl text-red-400 font-bold">{remainingTasks}</h2>
+              <p className="dark:text-gray-300">Remaining</p>
             </CardContent>
           </Card>
         </div>
 
         <div className="space-y-3">
-        {/* Render the list of tasks */}
-        {sortedTasks.map((task) => (
-          <Card key={task.id} className={`${task.completed ? "opacity-60" : ""}`}>
-            <CardContent className="">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Button variant="ghost" size="sm" onClick={() => toggleTask(task.id)}>
-                    {task.completed ? (
-                      <CheckCircle className="h-5 w-5 text-green-600" />
-                    ) : (
-                      <Circle className="h-5 w-5" />
-                    )}
+          {/* Render the list of tasks */}
+          {sortedTasks.map((task) => (
+            <Card key={task.id} className={`${task.completed ? "opacity-60" : ""}`}>
+              <CardContent className="">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Button variant="ghost" size="sm" onClick={() => toggleTask(task.id)}>
+                      {task.completed ? (
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                      ) : (
+                        <Circle className="h-5 w-5" />
+                      )}
+                    </Button>
+                    <span className={`${task.completed ? "line-through" : ""}`}>{task.text}</span>
+                    <Badge className={getPriorityColor(task.priority)}>
+                      <Flag className="h-3 w-3 mr-1" />
+                      {task.priority}
+                    </Badge>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => deleteTask(task.id)}>
+                    <Trash2 className="h-4 w-4 text-red-500" />
                   </Button>
-                  <span className={`${task.completed ? "line-through" : ""}`}>{task.text}</span> {/* Use task.text */}
-                  <Badge className={getPriorityColor(task.priority)}>
-                    <Flag className="h-3 w-3 mr-1" />
-                    {task.priority}
-                  </Badge>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => deleteTask(task.id)}>
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-
-        {/* Show message if no tasks */}
-        {tasks.length === 0 && (
-          <div>
-            <Card>
-              <CardContent className="p-4 text-center text-gray-500">No tasks yet. Add your first task above!</CardContent>
+              </CardContent>
             </Card>
-          </div>
-        )}
+          ))}
 
-        </div> {/* Closing div for space-y-3 */}
+          {/* Show message if no tasks */}
+          {tasks.length === 0 && (
+            <div>
+              <Card>
+                <CardContent className="p-4 text-center text-gray-500">No tasks yet. Add your first task above!</CardContent>
+              </Card>
+            </div>
+          )}
 
-      </div> {/* Closing div for max-w-4xl */}
-    </div> 
+        </div>
+      </div>
+    </div>
   )
 }

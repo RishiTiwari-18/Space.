@@ -19,8 +19,8 @@ import { useState } from "react";
 const navLinks = [
   { href: "/", text: "Focus" },
   { href: "/tasks", text: "Tasks" },
-  { href: "/wellness", text: "Wellness" },
-  { href: "/study", text: "Study" },
+  // { href: "/wellness", text: "Wellness" },
+  // { href: "/study", text: "Study" },
   { href: "/journal", text: "Journal" },
   { href: "/draw", text: "Draw"}
 ];
@@ -30,7 +30,6 @@ export default function Navigation() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  // Handler for mobile nav link click: close sheet and navigate
   const handleMobileNavClick = (href: string) => () => {
     setOpen(false);
     router.push(href);

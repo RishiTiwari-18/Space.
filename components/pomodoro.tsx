@@ -61,8 +61,8 @@ export default function Pomodoro() {
             aria-labelledby="set-timer-duration-title"
           >
             <SheetHeader>
-              <SheetTitle asChild>
-                <h3 id="set-timer-duration-title">Set Timer Duration</h3>
+              <SheetTitle id="set-timer-duration-title">
+                Set Timer Duration
               </SheetTitle>
             </SheetHeader>
             <div className="flex items-center w-full max-w-lg justify-center space-x-2 py-6">

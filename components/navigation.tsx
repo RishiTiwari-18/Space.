@@ -83,9 +83,7 @@ export default function Navigation() {
               role="menu"
             >
               <SheetHeader>
-                <SheetTitle asChild>
-                  <h2 id="mobile-nav-title">Menu</h2>
-                </SheetTitle>
+                <SheetTitle id="mobile-nav-title">Menu</SheetTitle>
               </SheetHeader>
               <ul className="flex flex-col gap-6 mt-6 px-4" aria-labelledby="mobile-nav-title">
                 {navLinks.map((link) => (
@@ -124,9 +122,7 @@ export default function Navigation() {
             role="region"
           >
             <SheetHeader>
-              <SheetTitle asChild>
-                <h2 id="theme-selector-title">Customize Appearance</h2>
-              </SheetTitle>
+              <SheetTitle id="theme-selector-title">Customize Appearance</SheetTitle>
               <SheetDescription id="theme-selector-desc">
                 Choose your preferred colors and background
               </SheetDescription>

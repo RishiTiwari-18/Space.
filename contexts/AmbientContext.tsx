@@ -4,7 +4,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Play, Volume2, VolumeX, Square } from "lucide-react";
+import { Play, Square } from "lucide-react";
 
 type AmbientSound = {
   name: string;
@@ -58,6 +58,14 @@ export const AmbientProvider = ({ children }: { children: React.ReactNode }) => 
 
     const { isPlaying, volume, prevVolume, audioRef } = state;
 
+    // Local volume state for smooth dragging without re-rendering global context
+    const [localVolume, setLocalVolume] = useState(volume);
+
+    // Keep local volume in sync if global volume changes externally
+    useEffect(() => {
+      setLocalVolume(volume);
+    }, [volume]);
+
     useEffect(() => {
       let audio = audioRef.current;
       if (!audio) {
@@ -98,6 +106,15 @@ export const AmbientProvider = ({ children }: { children: React.ReactNode }) => 
 
     const handleVolumeChange = (newVolume: number[]) => {
       const vol = newVolume[0];
+      setLocalVolume(vol);
+      const audio = audioRef.current;
+      if (audio) {
+        audio.volume = vol;
+      }
+    };
+
+    const handleVolumeCommit = (finalVolume: number[]) => {
+      const vol = finalVolume[0];
       setSoundStates((prev) => ({
         ...prev,
         [sound.name]: {
@@ -106,31 +123,6 @@ export const AmbientProvider = ({ children }: { children: React.ReactNode }) => 
           prevVolume: vol > 0 ? vol : prev[sound.name].prevVolume,
         },
       }));
-    };
-
-    const handleMuteToggle = () => {
-      setSoundStates((prev) => {
-        const curr = prev[sound.name];
-        if (!curr) return prev;
-        if (curr.volume > 0) {
-          return {
-            ...prev,
-            [sound.name]: {
-              ...curr,
-              prevVolume: curr.volume,
-              volume: 0,
-            },
-          };
-        } else {
-          return {
-            ...prev,
-            [sound.name]: {
-              ...curr,
-              volume: curr.prevVolume > 0 ? curr.prevVolume : 0.5,
-            },
-          };
-        }
-      });
     };
 
     const handleStop = () => {
@@ -178,20 +170,12 @@ export const AmbientProvider = ({ children }: { children: React.ReactNode }) => 
             </Button>
           ) : (
             <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleMuteToggle}
-                aria-label={volume === 0 ? `Unmute ${sound.name}` : `Mute ${sound.name}`}
-                title={volume === 0 ? `Unmute ${sound.name}` : `Mute ${sound.name}`}
-              >
-                {volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
-              </Button>
               <Slider
-                value={[volume]}
+                value={[localVolume]}
                 max={1}
                 step={0.01}
                 onValueChange={handleVolumeChange}
+                onValueCommit={handleVolumeCommit}
                 className="w-[100px]"
                 aria-label={`${sound.name} volume`}
                 title={`${sound.name} volume`}

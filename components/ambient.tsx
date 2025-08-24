@@ -25,7 +25,7 @@ export default function Ambient() {
         </h2>
       </CardHeader>
       <CardContent
-        className="grid md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4"
+        className="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4"
         aria-labelledby="ambient-sounds-title"
       >
           {ambientSoundsData.map((sound) => (

@@ -2,7 +2,15 @@
 "use client"
 
 import React, { createContext, useContext, useState, useRef, ReactNode, useEffect } from "react";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 type PomodoroContextType = {
   duration: number;
@@ -24,6 +32,7 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
   const [duration, setDuration] = useState(25); // in minutes
   const [secondsLeft, setSecondsLeft] = useState(duration * 60);
   const [isRunning, setIsRunning] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -42,6 +51,7 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
             audioRef.current.currentTime = 0;
             audioRef.current.play();
           }
+          setShowDialog(true);
           return 0;
         });
       }, 1000);
@@ -75,6 +85,11 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const handleDialogClose = () => {
+    setShowDialog(false);
+    setSecondsLeft(duration * 60);
+  };
+
   const value: PomodoroContextType = {
     duration,
     secondsLeft,
@@ -93,6 +108,21 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
     <PomodoroContext.Provider value={value}>
       {children}
       <audio ref={audioRef} src="/audio/complete.mp3" preload="auto" />
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Session Complete</DialogTitle>
+            <DialogDescription>
+              Ready for a break? Stretch, hydrate, or relax for a few minutes.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={handleDialogClose} autoFocus>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </PomodoroContext.Provider>
   );
 };
@@ -104,3 +134,5 @@ export const usePomodoro = () => {
   }
   return context;
 };
+
+// Ideas How many pomodoro completed today

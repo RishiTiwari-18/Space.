@@ -48,8 +48,7 @@ export default function RootLayout({
             {children}
           </div>
           </PomodoroProvider>
-          </AmbientProvider>
-          
+          </AmbientProvider>  
         </ThemeProvider>
       </body>
     </html>

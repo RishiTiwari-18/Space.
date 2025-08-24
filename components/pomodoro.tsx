@@ -55,7 +55,7 @@ export default function Pomodoro() {
             </button>
           </SheetTrigger>
           <SheetContent
-            className="flex flex-col items-center py-6"
+            className="flex flex-col items-center p-6"
             side="bottom"
             aria-modal="true"
             aria-labelledby="set-timer-duration-title"

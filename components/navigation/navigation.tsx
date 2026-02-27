@@ -1,7 +1,6 @@
-"use client";
 
 import Link from "next/link";
-import { Palette, Telescope, Menu } from "lucide-react";
+import { Palette, Telescope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -10,11 +9,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
-import { ThemeSelector } from "./theme-selector";
-import { useTheme } from "@/lib/use-theme";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+} from "../ui/sheet";
+import { ThemeSelector } from "../theme-selector";
+import MobileNav from "./mobile-nav";
 
 const navLinks = [
   { href: "/", text: "Focus" },
@@ -26,14 +23,8 @@ const navLinks = [
 ];
 
 export default function Navigation() {
-  useTheme();
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
 
-  const handleMobileNavClick = (href: string) => () => {
-    setOpen(false);
-    router.push(href);
-  };
+
 
   return (
     <nav
@@ -64,46 +55,7 @@ export default function Navigation() {
       </ul>
       <div className="flex items-center gap-4">
         {/* Mobile nav: show menu button on small screens */}
-        <div className="md:hidden">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                aria-label="Open navigation menu"
-                title="Open navigation menu"
-              >
-                <Menu className="h-5 w-5" aria-hidden="true" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="left"
-              className="w-80 max-w-full"
-              aria-label="Mobile navigation"
-              role="menu"
-            >
-              <SheetHeader>
-                <SheetTitle id="mobile-nav-title">Menu</SheetTitle>
-              </SheetHeader>
-              <ul className="flex flex-col gap-6 mt-6 px-4" aria-labelledby="mobile-nav-title">
-                {navLinks.map((link) => (
-                  <li key={link.href} role="none">
-                    <button
-                      className="text-xl font-medium hover:text-accent-foreground duration-200 text-left w-full"
-                      role="menuitem"
-                      aria-label={link.text}
-                      onClick={handleMobileNavClick(link.href)}
-                      tabIndex={0}
-                      type="button"
-                    >
-                      {link.text}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </SheetContent>
-          </Sheet>
-        </div>
+          <MobileNav navLinks={navLinks} />
         {/* Theme selector */}
         <Sheet>
           <SheetTrigger asChild>

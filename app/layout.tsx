@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Architects_Daughter } from "next/font/google";
-import Navigation from "@/components/navigation";
+import Navigation from "@/components/navigation/navigation";
 import { BackgroundPaths } from "@/components/ui/background-paths";
 import { PomodoroProvider } from "@/contexts/PomodoroContext";
 import { AmbientProvider } from "@/contexts/AmbientContext";
